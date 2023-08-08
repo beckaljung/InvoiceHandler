@@ -4,4 +4,4 @@ const readStream = require('./readStream');
 
 readStream();
 
-// See the file montlyExposures.txt for the report
+// See the file montlyExposures.txt for the report 

@@ -25,23 +25,24 @@ function readStream() {
 
             if ( parseFloat(invoice.amount) && new Date(invoice.timestamp) instanceof Date && timeStamp[0] == choosenYear) {
 
-                if (Number(timeStamp[1]) > month) {
+                if (parseInt(timeStamp[1]) > month) {
                     eval('montlyExposures.' + monthsOfTheYear[month - 1] + '= ' + monthsMaxExposure + ';')
-                    monthsMaxExposure = currentExposure; // The start exposure (before the first invoice) for each month can be the max exposure. (otherwise set =0 here)
+                    monthsMaxExposure = currentExposure.toFixed(2); // The start exposure (before the first invoice) for each month can be the max exposure. (otherwise set =0 here)
                     month++;
                 }
 
+
                     switch (invoice.eventType) {
                         case 'InvoiceRegistered': {
-                            currentExposure += Number(invoice.amount);
+                            currentExposure += parseFloat(invoice.amount) ;
                             break;
                         }
                         case 'LateFeeRegistered': {
-                            currentExposure += Number(invoice.amount);
+                            currentExposure += parseFloat(invoice.amount);
                             break;
                         }
                         case 'PaymentRegistered': {
-                            currentExposure -= Number(invoice.amount);
+                            currentExposure -= parseFloat(invoice.amount);
                             break;
                         }
                         default: {
@@ -50,7 +51,7 @@ function readStream() {
                     };
 
                 if (currentExposure > monthsMaxExposure) {
-                    monthsMaxExposure = currentExposure;
+                    monthsMaxExposure = currentExposure.toFixed(2);
                 }
             }
             else {
