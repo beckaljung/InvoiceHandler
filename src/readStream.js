@@ -23,7 +23,7 @@ function readStream() {
             let invoice = JSON.parse(event);
             let timeStamp = invoice.timestamp.split("-");
 
-            if (timeStamp[0] == choosenYear) {
+            if ( parseInt(invoice.amount) && new Date(invoice.timestamp) instanceof Date && timeStamp[0] == choosenYear) {
 
                 if (parseInt(timeStamp[1]) > month) {
                     eval('montlyExposures.' + monthsOfTheYear[month - 1] + '= ' + monthsMaxExposure + ';')
@@ -31,7 +31,6 @@ function readStream() {
                     month++;
                 }
 
-                if (parseInt(invoice.amount) && new Date(invoice.timestamp) instanceof Date) {
                     switch (invoice.eventType) {
                         case 'InvoiceRegistered': {
                             currentExposure += parseInt(invoice.amount);
@@ -49,7 +48,6 @@ function readStream() {
                             corruptLines++;
                         }
                     };
-                }
 
                 if (currentExposure > monthsMaxExposure) {
                     monthsMaxExposure = currentExposure;
